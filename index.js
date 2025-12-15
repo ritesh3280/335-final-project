@@ -60,6 +60,7 @@ app.post("/searched", async (req, res) => {
     }
 });
 
+//NEED TO FINISH THIS
 app.post("/submitPurchase", async (req, res) => {
     const { name, email, medicine, quant, symptoms } = req.body;
     const doc = {
@@ -74,6 +75,12 @@ app.post("/submitPurchase", async (req, res) => {
     //await applicantsCollection.insertOne(doc);
     res.render("applicationSubmitted", { doc });
 });
+
+/*
+app.get("/reviewPurchases", async (req, res) => {
+    //Add mongoDB code that gets all purchases made
+});
+*/
 
 app.listen(portNumber);
 console.log(`main URL http://localhost:${portNumber}/`);
