@@ -1,0 +1,38 @@
+<!-- DO NOT MODIFY THIS FILE -->
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Purchase Page</title>
+</head>
+
+<body>
+	<h1>Purchase</h1>
+    <form action="/submitPurchase" method="POST" onsubmit="return confirm('Are you sure you want to submit this application?');">
+
+        <fieldset>
+            <label><b>Your Name:</b></label>
+            <input type="text" name="name">
+            <label><b>Your Email Address:</b></label>
+            <input type="text" name="email" class="email-input">
+            <br><br>
+            <label><b>Medicine Name:</b></label>
+            <input type="text" name="medicine" value="<%= medicine %>" readonly/>
+            <label><b>How Many:</b></label>
+            <input type="number" name="quant">
+            <br><br>
+            <label><b>What symmptoms do you have?</b></label>
+            <br>
+            <textarea name="symptoms"></textarea>
+        </fieldset>
+        <br>
+        <input type="reset" value="Reset">
+        <button type="submit">Submit Application</button>
+    </form>
+
+    <hr>
+    <a href="/">HOME</a>
+</body>
+
+</html>
