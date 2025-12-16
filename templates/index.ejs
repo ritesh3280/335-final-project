@@ -4,17 +4,104 @@
 
 <head>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>CMSC335 Final Project</title>
+	<link rel="stylesheet" href="/styles.css">
 </head>
 
 <body>
-	<h1>Welcome to your Pharmacy App</h1>
+	<!-- Particle Animation Canvas -->
+	<canvas id="particles"></canvas>
+	
+	<div class="home-container">
+		<div class="home-header">
+			<h1>Welcome to your Pharmacy App</h1>
+			<h2>What would you like to do today?</h2>
+		</div>
 
-	<h2>What would you like to do today?</h2>
-	<ul>
-		<li>To buy new medicine select <a href="/search">Search</a></li>
-		<li>To review your previous purchased medicines select <a href="/reviewPurchases">Review Purchases</a></li>
-	</ul>
+		<div class="home-options">
+			<div class="option-card">
+				<span class="icon">🔍</span>
+				<h3>Search Medicine</h3>
+				<p>Search for medicines by generic name using the FDA database. Find detailed information about medications before purchasing.</p>
+				<a href="/search" class="card-link">Search Now</a>
+			</div>
+
+			<div class="option-card">
+				<span class="icon">📋</span>
+				<h3>Review Purchases</h3>
+				<p>View your previous medicine purchases and order history. Keep track of all your past transactions.</p>
+				<a href="/reviewPurchases" class="card-link">View Purchases</a>
+			</div>
+		</div>
+	</div>
+
+	<footer class="home-footer">
+		<div class="footer-content">
+			<p>&copy; 2025 Pharmacy App. All rights reserved.</p>
+			<p>CMSC335 Final Project</p>
+		</div>
+	</footer>
+
+	<script>
+		// Particle Animation
+		const canvas = document.getElementById('particles');
+		const ctx = canvas.getContext('2d');
+		
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		
+		const particles = [];
+		const particleCount = 50;
+		
+		class Particle {
+			constructor() {
+				this.x = Math.random() * canvas.width;
+				this.y = Math.random() * canvas.height;
+				this.size = Math.random() * 3 + 1;
+				this.speedX = Math.random() * 1 - 0.5;
+				this.speedY = Math.random() * 1 - 0.5;
+				this.opacity = Math.random() * 0.5 + 0.2;
+			}
+			
+			update() {
+				this.x += this.speedX;
+				this.y += this.speedY;
+				
+				if (this.x > canvas.width) this.x = 0;
+				if (this.x < 0) this.x = canvas.width;
+				if (this.y > canvas.height) this.y = 0;
+				if (this.y < 0) this.y = canvas.height;
+			}
+			
+			draw() {
+				ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+				ctx.fill();
+			}
+		}
+		
+		for (let i = 0; i < particleCount; i++) {
+			particles.push(new Particle());
+		}
+		
+		function animate() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			particles.forEach(particle => {
+				particle.update();
+				particle.draw();
+			});
+			requestAnimationFrame(animate);
+		}
+		
+		animate();
+		
+		window.addEventListener('resize', () => {
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+		});
+	</script>
 </body>
 
 </html>

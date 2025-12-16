@@ -4,35 +4,99 @@
 
 <head>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Purchase Page</title>
+	<link rel="stylesheet" href="/styles.css">
 </head>
 
 <body>
-	<h1>Purchase</h1>
-    <form action="/submitPurchase" method="POST" onsubmit="return confirm('Are you sure you want to submit this application?');">
+	<canvas id="particles"></canvas>
+	
+	<div class="page-container">
+		<div class="page-header">
+			<h1>Purchase Medicine</h1>
+		</div>
+		
+		<form action="/submitPurchase" method="POST" onsubmit="return confirm('Are you sure you want to submit this application?');">
+			<fieldset>
+				<label><b>Your Name:</b></label>
+				<input type="text" name="name" required>
+				<label><b>Your Email Address:</b></label>
+				<input type="email" name="email" class="email-input" required>
+				<label><b>Medicine Name:</b></label>
+				<input type="text" name="medicine" value="<%= medicine %>" readonly style="background: rgba(255, 255, 255, 0.1);">
+				<label><b>How Many:</b></label>
+				<input type="number" name="quant" min="1" required>
+				<label><b>What symptoms do you have?</b></label>
+				<textarea name="symptoms" placeholder="Describe your symptoms..." required></textarea>
+			</fieldset>
+			<div style="text-align: center; margin-top: 20px;">
+				<input type="reset" value="Reset">
+				<button type="submit">Submit Application</button>
+			</div>
+		</form>
 
-        <fieldset>
-            <label><b>Your Name:</b></label>
-            <input type="text" name="name">
-            <label><b>Your Email Address:</b></label>
-            <input type="text" name="email" class="email-input">
-            <br><br>
-            <label><b>Medicine Name:</b></label>
-            <input type="text" name="medicine" value="<%= medicine %>" readonly/>
-            <label><b>How Many:</b></label>
-            <input type="number" name="quant">
-            <br><br>
-            <label><b>What symmptoms do you have?</b></label>
-            <br>
-            <textarea name="symptoms"></textarea>
-        </fieldset>
-        <br>
-        <input type="reset" value="Reset">
-        <button type="submit">Submit Application</button>
-    </form>
+		<a href="/" class="nav-link">← Back to Home</a>
+	</div>
 
-    <hr>
-    <a href="/">HOME</a>
+	<footer class="home-footer">
+		<div class="footer-content">
+			<p>&copy; 2025 Pharmacy App. All rights reserved.</p>
+			<p>CMSC335 Final Project</p>
+		</div>
+	</footer>
+
+	<script>
+		const canvas = document.getElementById('particles');
+		const ctx = canvas.getContext('2d');
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		const particles = [];
+		const particleCount = 50;
+		
+		class Particle {
+			constructor() {
+				this.x = Math.random() * canvas.width;
+				this.y = Math.random() * canvas.height;
+				this.size = Math.random() * 3 + 1;
+				this.speedX = Math.random() * 1 - 0.5;
+				this.speedY = Math.random() * 1 - 0.5;
+				this.opacity = Math.random() * 0.5 + 0.2;
+			}
+			update() {
+				this.x += this.speedX;
+				this.y += this.speedY;
+				if (this.x > canvas.width) this.x = 0;
+				if (this.x < 0) this.x = canvas.width;
+				if (this.y > canvas.height) this.y = 0;
+				if (this.y < 0) this.y = canvas.height;
+			}
+			draw() {
+				ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+				ctx.fill();
+			}
+		}
+		
+		for (let i = 0; i < particleCount; i++) {
+			particles.push(new Particle());
+		}
+		
+		function animate() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			particles.forEach(particle => {
+				particle.update();
+				particle.draw();
+			});
+			requestAnimationFrame(animate);
+		}
+		animate();
+		window.addEventListener('resize', () => {
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+		});
+	</script>
 </body>
 
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Medicine</title>
+    <title>Review Purchases</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -11,53 +11,50 @@
     
     <div class="page-container">
         <div class="page-header">
-            <h1>Search Medicine by Generic Name</h1>
+            <h1>Review Your Previous Purchases</h1>
         </div>
-
-        <form method="POST" action="/searched">
-            <label>Enter Generic Medicine Name:</label>
-            <input
-                type="text"
-                name="generic"
-                placeholder="e.g. ibuprofen, acetaminophen"
-                required
-            />
-            <button type="submit">Search</button>
-        </form>
-
+        
         <% if (error) { %>
             <div class="error-message">
                 <p><%= error %></p>
             </div>
         <% } %>
-
-        <% if (result) { %>
-            <div class="content-card">
-                <h2 style="color: rgba(255, 255, 255, 0.95); text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); margin-bottom: 25px; font-size: 2.2em;">Medicine Found</h2>
-
-                <p><strong>Generic Name:</strong> <%= result.generic_name %></p>
-                <p><strong>Brand Name:</strong> <%= result.brand_name %></p>
-                <p><strong>Labeler:</strong> <%= result.labeler_name %></p>
-                <p><strong>Dosage Form:</strong> <%= result.dosage_form %></p>
-
-                <p style="margin-top: 25px;"><strong>Active Ingredients:</strong></p>
-                <ul>
-                    <% if (result.active_ingredients.length > 0) { %>
-                        <% result.active_ingredients.forEach(ai => { %>
-                            <li><%= ai.name %> – <%= ai.strength %></li>
+        
+        <% if (purchases && purchases.length > 0) { %>
+            <div class="content-card" style="overflow-x: auto;">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Medicine</th>
+                            <th>Quantity</th>
+                            <th>Symptoms</th>
+                            <th>Submitted At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% purchases.forEach(purchase => { %>
+                            <tr>
+                                <td><%= purchase.name %></td>
+                                <td><%= purchase.email %></td>
+                                <td><%= purchase.medicine %></td>
+                                <td><%= purchase.quant %></td>
+                                <td><%= purchase.symptoms %></td>
+                                <td><%= purchase.submittedAt.toLocaleString() %></td>
+                            </tr>
                         <% }) %>
-                    <% } else { %>
-                        <li>No active ingredient data available</li>
-                    <% } %>
-                </ul>
-                
-                <form method="GET" action="/purchase" style="margin-top: 30px; padding: 0; background: transparent; box-shadow: none; border: none;">
-                    <input type="hidden" name="medicine" value="<%= result.generic_name %>">
-                    <button type="submit">Purchase This Medicine</button>
-                </form>
+                    </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <div class="content-card">
+                <div class="empty-state">
+                    <p>No purchases found.</p>
+                </div>
             </div>
         <% } %>
-
+        
         <a href="/" class="nav-link">← Back to Home</a>
     </div>
 
@@ -121,3 +118,4 @@
     </script>
 </body>
 </html>
+
