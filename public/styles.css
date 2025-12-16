@@ -207,12 +207,6 @@ p {
     max-width: 700px;
 }
 
-@media (max-width: 600px) {
-    .home-options {
-        grid-template-columns: 1fr;
-    }
-}
-
 .option-card {
     background: var(--bg-primary);
     border-radius: 16px;
